@@ -27,12 +27,17 @@ const Todo = ({ todo }: TodoProps) => {
     setIsEditing(true);
   };
   const handleSave = async () => {
-    await editTodo(todo.id,editedTaskTitle);
+    await editTodo(todo.id,editedTaskTitle,todo.date);
     setIsEditing(false);
   };
 
   const handleDelete = async () => {
     await deleteTodo(todo.id);
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
   };
 
   return (
@@ -46,7 +51,7 @@ const Todo = ({ todo }: TodoProps) => {
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>setEditedTitle(e.target.value)
         }
   />
-      ) : <span>{todo.text}</span>}
+      ) : <span>{todo.text}　{todo.date && `  ${formatDate(todo.date)}`}</span>}
       <div>
         {isEditing ? (<button className="text-blue-500 mr-3" onClick={handleSave}>save</button>) : (<button className="text-green-500 mr-3" onClick={handleEdit}>edit</button>)}
         <button className='text-red-500' onClick={handleDelete}>Delete</button>
@@ -55,4 +60,4 @@ const Todo = ({ todo }: TodoProps) => {
   )
 }
 
-export default Todo
+export default Todo;
